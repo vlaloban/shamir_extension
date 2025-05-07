@@ -146,3 +146,32 @@ $("copySharesBtn").onclick = () => {
         alert("Error while copying shares: " + err);
     });
 };
+
+document.getElementById('supportLink').onclick = function(event) {
+    event.preventDefault();
+    document.getElementById('supportModal').style.display = 'block';
+};
+
+document.querySelector('#supportModal button[onclick="closeModal()"]')
+    .addEventListener('click', closeModal);
+
+document.querySelectorAll('#supportModal button[onclick^="copyToClipboard("]')
+    .forEach(button => {
+        button.addEventListener('click', function() {
+            const elementId = this.previousElementSibling.id;
+            copyToClipboard(elementId);
+        });
+    });
+
+function closeModal() {
+    document.getElementById('supportModal').style.display = 'none';
+}
+
+function copyToClipboard(elementId) {
+    const text = document.getElementById(elementId).textContent;
+    navigator.clipboard.writeText(text).then(() => {
+        alert('Address copied to clipboard');
+    }).catch(err => {
+        alert('Error copying address: ' + err);
+    });
+}
